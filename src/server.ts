@@ -3,7 +3,7 @@ import cors from "@fastify/cors";
 import "dotenv/config";
 import { nbaRoutes } from "./routes/nba";
 
-function requiredEnv(name: string): String {
+function requiredEnv(name: string): string {
     const v = process.env[name];
     if (!v) throw new Error(`Missing env var: ${name}`);
     return v;
