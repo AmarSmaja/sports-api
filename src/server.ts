@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import "dotenv/config";
 import { nbaRoutes } from "./routes/nba";
+import { scheduleRoutes } from "./routes/schedule";
 
 function requiredEnv(name: string): string {
     const v = process.env[name];
@@ -27,6 +28,7 @@ async function main() {
     app.get("/health", async () => ({ ok: true }));
 
     await app.register(nbaRoutes, { prefix: "/nba" });
+    await app.register(scheduleRoutes);
 
     await app.listen({ port: PORT, host: HOST });
     app.log.info(`API is listening on http://${HOST}:${PORT}`);
