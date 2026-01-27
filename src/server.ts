@@ -3,6 +3,7 @@ import rateLimit from '@fastify/rate-limit';
 import cors from "@fastify/cors";
 import "dotenv/config";
 import { nbaRoutes } from "./routes/nba";
+import { nflRoutes } from "./routes/nfl";
 import { scheduleRoutes } from "./routes/schedule";
 
 function requiredEnv(name: string): string {
@@ -40,6 +41,7 @@ async function main() {
     });
 
     await app.register(nbaRoutes, { prefix: "/nba" });
+    await app.register(nflRoutes, { prefix: "/nfl" });
     await app.register(scheduleRoutes);
 
     await app.listen({ port: PORT, host: HOST });

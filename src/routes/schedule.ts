@@ -47,7 +47,14 @@ export const scheduleRoutes: FastifyPluginAsync = async (app) => {
       targetPath = `/nba/games${params.toString()}`;
     }
 
-    if (!targetPath) return reply.status(400).send({ error: 'Unsupported sport', sport, supported: ['nba'] });
+    if (sport === 'nfl') {
+      const params = new URLSearchParams();
+      if (date) params.set("date", date);
+      if (forceRefresh) params.set('forceRefresh', 'true');
+      targetPath = `/nfl/games?${params.toString()}`;
+    }
+
+    if (!targetPath) return reply.status(400).send({ error: 'Unsupported sport', sport, supported: ['nba', 'nfl'] });
 
     const res = await app.inject({ method: "GET", url: targetPath, headers: { accept: 'application/json' } });
 
