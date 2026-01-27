@@ -40,14 +40,7 @@ async function main() {
     });
 
     await app.register(nbaRoutes, { prefix: "/nba" });
-    await app.register(scheduleRoutes, {
-        config: {
-            rateLimit: {
-                max: 120,
-                timeWindow: "1 minute",
-            },
-        },
-    });
+    await app.register(scheduleRoutes);
 
     await app.listen({ port: PORT, host: HOST });
     app.log.info(`API is listening on http://${HOST}:${PORT}`);
