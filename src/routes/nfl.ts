@@ -82,7 +82,7 @@ function parseEspnNflScoreboard(payload: any) {
 }
 
 export const nflRoutes: FastifyPluginAsync = async (app) => {
-    app.get<{ QueryString: NflGamesQuery }>("/games", async (req, reply) => {
+    app.get<{ Querystring: NflGamesQuery }>("/games", async (req, reply) => {
         const date = (req.query?.date ?? "").trim();
         const forceRefresh = truthyParam(req.query?.forceRefresh);
 
