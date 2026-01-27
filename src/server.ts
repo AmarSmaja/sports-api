@@ -23,14 +23,31 @@ export const env = {
 
 async function main() {
     const app = Fastify({ logger: true, trustProxy: true });
-
     await app.register(cors, { origin: ALLOWED_ORIGINS.length ? ALLOWED_ORIGINS: true, credentials: false })
 
     app.get("/health", async () => ({ ok: true }));
 
-    await app.register(rateLimit, { global: true, max: 300, timeWindow: '1 minute' });
+    await app.register(rateLimit, { 
+        global: true, 
+        max: 300, 
+        timeWindow: '1 minute',
+        addHeaders: {
+            "x-ratelimit-limit": true,
+            "ratelimit-remaining": true,
+            "x-ratelimit-reset": true,
+        },
+        allowList: (req) => req.url.startsWith("/health"),
+    });
+
     await app.register(nbaRoutes, { prefix: "/nba" });
-    await app.register(scheduleRoutes);
+    await app.register(scheduleRoutes, {
+        config: {
+            rateLimit: {
+                max: 120,
+                timeWindow: "1 minute",
+            },
+        },
+    });
 
     await app.listen({ port: PORT, host: HOST });
     app.log.info(`API is listening on http://${HOST}:${PORT}`);
