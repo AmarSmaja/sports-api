@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import rateLimit from '@fastify/rate-limit';
 import cors from "@fastify/cors";
 import "dotenv/config";
 import { nbaRoutes } from "./routes/nba";
@@ -21,12 +22,13 @@ export const env = {
 };
 
 async function main() {
-    const app = Fastify({ logger: true });
+    const app = Fastify({ logger: true, trustProxy: true });
 
     await app.register(cors, { origin: ALLOWED_ORIGINS.length ? ALLOWED_ORIGINS: true, credentials: false })
 
     app.get("/health", async () => ({ ok: true }));
 
+    await app.register(rateLimit, { global: true, max: 300, timeWindow: '1 minute' });
     await app.register(nbaRoutes, { prefix: "/nba" });
     await app.register(scheduleRoutes);
 
