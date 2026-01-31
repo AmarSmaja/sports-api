@@ -78,7 +78,10 @@ export const scheduleRoutes: FastifyPluginAsync = async (app) => {
         });
       }
 
-      return reply.send({ sport, ...res.json() });
+      const payload = res.json() as Record<string, unknown>;
+      payload.sport = sport;
+
+      return reply.send(payload);
     }
   );
 };
