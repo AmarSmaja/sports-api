@@ -1,4 +1,4 @@
-type Sport = 'football' | 'cbb' | 'cfb' | 'mma';
+type Sport = "nfl" | "football" | "cbb" | "cfb" | "mma";
 
 export type TeamRef = { id: string | number; name: string; abbr?: string | null };
 export type Score = { home: number | null; away: number | null };
@@ -27,8 +27,8 @@ const CFB_GROUPS = (process.env.CFB_GROUPS ?? '80')
   .map((s) => s.trim())
   .filter(Boolean);
 
-const CBB_GROUPS = (process.env.CBB_GROUPS ?? '100')
-  .split(',')
+const CBB_GROUPS = (process.env.CBB_GROUPS ?? "50")
+  .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
 
@@ -74,6 +74,7 @@ async function fetchJson(url: string): Promise<any> {
 async function fetchEspnScoreboard(pathAfterSports: string, dateIsoYYYYMMDD: string, extraParams?: Record<string, string>): Promise<any[]> {
   const params = new URLSearchParams();
   params.set('dates', yyyymmddFromIsoDate(dateIsoYYYYMMDD));
+  params.set('limit', '500');
 
   if (extraParams) {
     for (const [k, v] of Object.entries(extraParams)) params.set(k, v);
@@ -201,4 +202,8 @@ export async function fetchCbbEvents(dateIsoYYYYMMDD: string): Promise<any[]> {
 
 export async function fetchMmaEvents(dateIsoYYYYMMDD: string): Promise<any[]> {
   return fetchEspnScoreboard('mma/ufc', dateIsoYYYYMMDD);
+}
+
+export async function fetchNflEvents(dateIsoYYYYMMDD: string): Promise<any[]> {
+  return fetchEspnScoreboard("football/nfl", dateIsoYYYYMMDD);
 }
