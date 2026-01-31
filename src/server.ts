@@ -4,6 +4,10 @@ import cors from "@fastify/cors";
 import "dotenv/config";
 import { nbaRoutes } from "./routes/nba";
 import { nflRoutes } from "./routes/nfl";
+import { footballRoutes } from "./routes/football";
+import { cbbRoutes } from "./routes/cbb";
+import { cfbRoutes } from "./routes/cfb";
+import { mmaRoutes } from "./routes/mma";
 import { scheduleRoutes } from "./routes/schedule";
 
 function requiredEnv(name: string): string {
@@ -42,6 +46,12 @@ async function main() {
 
     await app.register(nbaRoutes, { prefix: "/nba" });
     await app.register(nflRoutes, { prefix: "/nfl" });
+
+    await app.register(footballRoutes, { prefix: "/football" });
+    await app.register(cbbRoutes, { prefix: "/cbb" });
+    await app.register(cfbRoutes, { prefix: "/cfb" });
+    await app.register(mmaRoutes, { prefix: "/mma" });
+    
     await app.register(scheduleRoutes);
 
     await app.listen({ port: PORT, host: HOST });
