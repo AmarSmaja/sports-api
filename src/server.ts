@@ -46,12 +46,11 @@ async function main() {
 
     await app.register(nbaRoutes, { prefix: "/nba" });
     await app.register(nflRoutes, { prefix: "/nfl" });
-
     await app.register(footballRoutes, { prefix: "/football" });
     await app.register(cbbRoutes, { prefix: "/cbb" });
     await app.register(cfbRoutes, { prefix: "/cfb" });
     await app.register(mmaRoutes, { prefix: "/mma" });
-    
+
     await app.register(scheduleRoutes);
 
     await app.listen({ port: PORT, host: HOST });
